@@ -23,7 +23,10 @@ module.exports = function(options = {}) {
 
     let hasHighlightNumbers = split.length > 0;
     let highlights = new HighlightLinesGroup(split.join("/"), "/");
-    let lines = html.split("\n").slice(0, -1); // The last line is empty.
+    let lines = html
+      .replace(/<span[^>]*>(\n\s*)<\/span>/g, "$1") // Remove `<span>`s that contain only whitespace
+      .split("\n")
+      .slice(0, -1); // The last line is empty
 
     lines = lines.map(function(line, j) {
       if(options.alwaysWrapLineHighlights || hasHighlightNumbers) {
